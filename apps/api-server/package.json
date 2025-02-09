@@ -1,0 +1,35 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "private": true,
+  "description": "This project was bootstrapped with Fastify-CLI.",
+  "keywords": [],
+  "license": "ISC",
+  "author": "",
+  "type": "module",
+  "scripts": {
+    "check-types": "tsc --noEmit",
+    "dev": "fastify start -w -l info -P src/app.ts",
+    "test": "node --test --experimental-test-coverage test/**/*.ts",
+    "test:watch": "node --test --watch --experimental-test-coverage test/**/*.ts"
+  },
+  "dependencies": {
+    "@fastify/autoload": "^6.0.0",
+    "@fastify/sensible": "^6.0.0",
+    "fastify": "^5.0.0",
+    "fastify-cli": "^7.3.0",
+    "fastify-plugin": "^5.0.0"
+  },
+  "devDependencies": {
+    "@repo/typescript-config": "*",
+    "@types/node": "^22.1.0",
+    "c8": "^10.1.2",
+    "fastify-tsconfig": "^2.0.0",
+    "typescript": "~5.8.0-beta.1"
+  },
+  "xscripts": {
+    "dev": "node src/server.ts",
+    "test": "vitest",
+    "test:watch": "vitest --watch"
+  }
+}

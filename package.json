@@ -11,7 +11,8 @@
     "check-types": "turbo run check-types",
     "dev": "turbo dev",
     "format": "prettier . --cache --write",
-    "lint": "turbo lint"
+    "lint": "turbo lint",
+    "test": "turbo test"
   },
   "devDependencies": {
     "prettier": "^3.4.2",
