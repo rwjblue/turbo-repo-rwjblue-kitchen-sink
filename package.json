@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json.schemastore.org/package.json",
+  "name": "my-turborepo",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "turbo build",
+    "check-types": "turbo run check-types",
+    "dev": "turbo dev",
+    "format": "prettier . --cache --write",
+    "lint": "turbo lint"
+  },
+  "devDependencies": {
+    "prettier": "^3.4.2",
+    "turbo": "^2.4.0"
+  },
+  "packageManager": "npm@11.1.0",
+  "volta": {
+    "node": "23.7.0",
+    "npm": "11.1.0"
+  }
+}
