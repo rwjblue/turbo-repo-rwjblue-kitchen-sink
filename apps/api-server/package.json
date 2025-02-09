@@ -27,10 +27,5 @@
     "c8": "^10.1.2",
     "fastify-tsconfig": "^2.0.0",
     "typescript": "~5.8.0-beta.1"
-  },
-  "xscripts": {
-    "dev": "node src/server.ts",
-    "test": "vitest",
-    "test:watch": "vitest --watch"
   }
 }
