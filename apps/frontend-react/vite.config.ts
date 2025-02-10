@@ -21,6 +21,9 @@ const config: UserConfig = defineConfig({
     environment: "jsdom",
     setupFiles: ["./test/setup.ts"],
     globals: false,
+    coverage: {
+      provider: "v8",
+    },
   },
 });
 export default config;
