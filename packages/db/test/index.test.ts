@@ -22,14 +22,10 @@ describe("Database", () => {
       });
 
       expect(poll).toMatchInlineSnapshot(
-        {
-          id: expect.any(String),
-          createdAt: expect.any(String),
-        },
         `
         {
-          "createdAt": Any<String>,
-          "id": Any<String>,
+          "createdAt": "2024-01-01T12:00:00.000Z",
+          "id": "test-id-1",
           "options": [
             {
               "id": 1,
@@ -78,10 +74,6 @@ describe("Database", () => {
       });
 
       expect(updatedPoll).toMatchInlineSnapshot(
-        {
-          id: poll.id,
-          createdAt: expect.any(String),
-        },
         `
         {
           "createdAt": Any<String>,
@@ -123,7 +115,7 @@ describe("Database", () => {
 
   describe("getPolls", () => {
     it("returns polls ordered by vote count", async () => {
-      const poll1 = db.createPoll({
+      const _poll1 = db.createPoll({
         question: "First poll",
         options: ["A", "B"],
       });
