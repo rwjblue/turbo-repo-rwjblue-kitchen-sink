@@ -1,4 +1,5 @@
 import SQLiteDatabase from 'better-sqlite3';
+import { v4 as uuidv4 } from 'uuid';
 import type { Database as ISQLiteDatabase } from 'better-sqlite3';
 import type { Poll, PollOption, CreatePollInput, VoteInput } from '@repo/models';
 
@@ -196,13 +197,9 @@ export function setup(options: DBOptions): Database {
   return new DatabaseManager(db, options);
 }
 
-/**
- * Simple unique ID generator.
- * NOTE: In a production setting you might want to use a more robust solution like the `uuid` package.
- */
 function defaultGenerateId(): string {
-  return Math.random().toString(36).substring(2, 11);
-}
+  return uuidv4();
+};
 
 function defaultNow() {
   return new Date().toISOString();

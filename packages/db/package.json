@@ -16,7 +16,8 @@
   },
   "dependencies": {
     "@repo/models": "*",
-    "better-sqlite3": "^11.8.1"
+    "better-sqlite3": "^11.8.1",
+    "uuid": "^11.0.5"
   },
   "devDependencies": {
     "@repo/eslint-config": "*",
