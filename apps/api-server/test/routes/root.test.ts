@@ -1,12 +1,18 @@
-import { test } from "node:test";
-import * as assert from "node:assert";
-import { build } from "../helper.ts";
+import { describe, it, expect, afterEach, beforeEach } from "vitest";
+import {
+  setupServer,
+  teardownServer,
+  type TestContextWithServer,
+} from "../helper.ts";
 
-test("default root route", async (t) => {
-  const app = await build(t);
+describe("root route", () => {
+  beforeEach(setupServer);
+  afterEach(teardownServer);
 
-  const res = await app.inject({
-    url: "/",
+  it<TestContextWithServer>("default root route", async ({ server }) => {
+    const res = await server.inject({
+      url: "/",
+    });
+    expect(JSON.parse(res.payload)).toEqual({ root: true });
   });
-  assert.deepStrictEqual(JSON.parse(res.payload), { root: true });
 });

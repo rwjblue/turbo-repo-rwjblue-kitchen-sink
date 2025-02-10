@@ -1,13 +1,18 @@
-import { test } from "node:test";
-import * as assert from "node:assert";
-import { build } from "../helper.ts";
+import { describe, it, expect, beforeEach, afterEach } from "vitest";
+import {
+  setupServer,
+  teardownServer,
+  type TestContextWithServer,
+} from "../helper.ts";
 
-test("example is loaded", async (t) => {
-  const app = await build(t);
+describe("example route", () => {
+  beforeEach(setupServer);
+  afterEach(teardownServer);
 
-  const res = await app.inject({
-    url: "/example",
+  it<TestContextWithServer>("example is loaded", async ({ server }) => {
+    const res = await server.inject({
+      url: "/example",
+    });
+    expect(res.payload).toBe("this is an example");
   });
-
-  assert.equal(res.payload, "this is an example");
 });

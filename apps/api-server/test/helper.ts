@@ -1,13 +1,9 @@
 // This file contains code that we reuse between our tests.
 import helper from "fastify-cli/helper.js";
-import * as test from "node:test";
 import * as path from "node:path";
 import { fileURLToPath } from "node:url";
 import type { FastifyInstance } from "fastify";
-
-export type TestContext = {
-  after: typeof test.after;
-};
+import { type TestContext } from "vitest";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -21,20 +17,28 @@ function config() {
   };
 }
 
-// Automatically build and tear down our instance
-async function build(t: TestContext): Promise<FastifyInstance> {
+export interface ServerContext {
+  server: FastifyInstance;
+}
+
+export type TestContextWithServer = TestContext & ServerContext;
+
+async function setupServer(context: ServerContext): Promise<void> {
   // you can set all the options supported by the fastify CLI command
   const argv = [AppPath];
 
   // fastify-plugin ensures that all decorators
   // are exposed for testing purposes, this is
   // different from the production setup
-  const app = await helper.build(argv, config());
+  const server = await helper.build(argv, config());
 
-  // Tear down our app after we are done
-  t.after(() => void app.close());
-
-  return app;
+  context.server = server;
 }
 
-export { config, build };
+async function teardownServer(context: ServerContext): Promise<void> {
+  if (context.server) {
+    await context.server.close();
+  }
+}
+
+export { config, setupServer, teardownServer };
