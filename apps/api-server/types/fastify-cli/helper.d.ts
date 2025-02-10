@@ -4,8 +4,8 @@ declare module "fastify-cli/helper.js" {
   namespace helper {
     function build(
       args: Array<string>,
-      additionalOptions?: Object,
-      serverOptions?: Object,
+      additionalOptions?: object,
+      serverOptions?: object,
     ): FastifyInstance;
   }
 

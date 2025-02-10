@@ -1,6 +1,7 @@
 import fp from "fastify-plugin";
 import { type FastifyPluginCallback } from "fastify";
 
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface SupportPluginOptions {
   // Specify Support plugin options here
 }

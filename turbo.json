@@ -8,6 +8,9 @@
     "lint": {
       "dependsOn": ["^lint"]
     },
+    "lint:fix": {
+      "dependsOn": ["^lint:fix"]
+    },
     "check-types": {
       "dependsOn": ["^check-types"]
     },
@@ -15,6 +18,7 @@
       "cache": false,
       "persistent": true
     },
+    "lint": {},
     "test": {},
     "test:ci": {},
     "test:watch": {
