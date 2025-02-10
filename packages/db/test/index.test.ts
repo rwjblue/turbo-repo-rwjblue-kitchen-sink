@@ -136,18 +136,7 @@ describe("Database", () => {
       db.vote({ pollId: poll2.id, optionId: poll2.options[0].id });
 
       const polls = db.getPolls();
-      expect(polls).toMatchInlineSnapshot(
-        [
-          {
-            id: poll2.id,
-            createdAt: expect.any(String),
-          },
-          {
-            id: poll1.id,
-            createdAt: expect.any(String),
-          },
-        ],
-        `
+      expect(polls).toMatchInlineSnapshot(`
         [
           {
             "createdAt": "2024-01-01T12:00:00.000Z",
