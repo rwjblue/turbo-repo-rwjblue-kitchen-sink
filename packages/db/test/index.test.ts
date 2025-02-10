@@ -173,8 +173,7 @@ describe("Database", () => {
             "question": "First poll",
           },
         ]
-      `,
-      );
+      `);
     });
   });
 });
