@@ -8,12 +8,17 @@ export interface DatabasePluginOptions {
 
 const plugin: FastifyPluginCallback = fp<DatabasePluginOptions>(
   async (fastify, opts) => {
+    const dbOptions = opts.db ?? { memory: true };
+
+    fastify.log.info(
+      {
+        memory: dbOptions.memory,
+        filename: dbOptions.filename,
+      },
+      "Initializing database connection",
+    );
     // Setup database with provided options or defaults
-    const db = setup({
-      // TODO: default to memory for now
-      memory: true,
-      ...opts.db,
-    });
+    const db = setup(dbOptions);
 
     // Decorate fastify with the database instance
     fastify.decorate("db", db);
@@ -22,6 +27,9 @@ const plugin: FastifyPluginCallback = fp<DatabasePluginOptions>(
     fastify.addHook("onClose", async (instance) => {
       await instance.db.db.close();
     });
+  },
+  {
+    name: "db-plugin",
   },
 );
 

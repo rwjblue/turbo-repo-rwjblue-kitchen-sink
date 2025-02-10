@@ -1,3 +1,5 @@
+import { mkdirSync } from "node:fs";
+import { dirname } from "node:path";
 import SQLiteDatabase from "better-sqlite3";
 import { v4 as uuidv4 } from "uuid";
 import type { Database as ISQLiteDatabase } from "better-sqlite3";
@@ -179,6 +181,14 @@ export function setup(options: DBOptions): Database {
   const dbFilename = options.memory
     ? ":memory:"
     : options.filename || "polls.db";
+
+  if (dbFilename !== ":memory:") {
+    const dir = dirname(dbFilename);
+    if (dir !== ".") {
+      mkdirSync(dir, { recursive: true });
+    }
+  }
+
   const db = new SQLiteDatabase(dbFilename);
 
   // Create tables if they do not exist.

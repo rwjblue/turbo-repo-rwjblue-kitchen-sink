@@ -1,5 +1,36 @@
+import { rmSync, existsSync } from "node:fs";
+import { join } from "node:path";
+import { tmpdir } from "node:os";
 import { describe, it, expect, beforeEach } from "vitest";
 import { setup, type Database } from "../src/index.ts";
+
+describe("setup", () => {
+  it("creates directory structure if it doesn't exist", () => {
+    const tempPath = join(
+      tmpdir(),
+      `test-db-${Date.now()}`,
+      "nested",
+      "db.sqlite",
+    );
+
+    try {
+      const db = setup({
+        filename: tempPath,
+      });
+
+      expect(existsSync(tempPath)).toBe(true);
+
+      // Cleanup
+      db.db.close();
+    } finally {
+      // Clean up the test directory
+      rmSync(join(tmpdir(), `test-db-${Date.now()}`), {
+        recursive: true,
+        force: true,
+      });
+    }
+  });
+});
 
 describe("Database", () => {
   let db: Database;
@@ -76,8 +107,8 @@ describe("Database", () => {
       expect(updatedPoll).toMatchInlineSnapshot(
         `
         {
-          "createdAt": Any<String>,
-          "id": "${poll.id}",
+          "createdAt": "2024-01-01T12:00:00.000Z",
+          "id": "test-id-1",
           "options": [
             {
               "id": 1,

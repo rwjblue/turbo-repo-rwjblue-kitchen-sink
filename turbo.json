@@ -1,5 +1,6 @@
 {
   "$schema": "https://turbo.build/schema.json",
+  "globalEnv": ["NODE_ENV", "DB_PATH"],
   "globalPassThroughEnv": ["PLAYWRIGHT_*"],
   "ui": "tui",
   "tasks": {

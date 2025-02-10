@@ -9,10 +9,10 @@
   "type": "module",
   "scripts": {
     "check-types": "tsc --noEmit",
-    "dev": "NODE_OPTIONS=\"--disable-warning=ExperimentalWarning\" fastify start -w -l info -P src/app.ts",
+    "dev": "NODE_OPTIONS=\"--disable-warning=ExperimentalWarning\" fastify start -w -l info --options -P src/app.ts",
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
-    "start": "NODE_OPTIONS=\"--disable-warning=ExperimentalWarning\" fastify start -l info -P src/app.ts",
+    "start": "NODE_OPTIONS=\"--disable-warning=ExperimentalWarning\" fastify start -l info --options -P src/app.ts",
     "test": "vitest run",
     "test:ci": "vitest run --coverage",
     "test:watch": "vitest watch"

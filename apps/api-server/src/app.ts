@@ -2,16 +2,40 @@ import * as path from "node:path";
 import AutoLoad, { type AutoloadPluginOptions } from "@fastify/autoload";
 import { type FastifyPluginAsync } from "fastify";
 import { fileURLToPath } from "node:url";
+import type { DBOptions } from "@repo/db";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+function getDatabaseConfig(): DBOptions {
+  switch (process.env.NODE_ENV) {
+    case "test":
+      return {
+        memory: true,
+      };
+    case "production":
+    case "development":
+    default: {
+      const env = process.env.NODE_ENV ?? "development";
+
+      const filename =
+        process.env.DB_PATH ??
+        path.join(__dirname, `../../../.db/${env}.sqlite`);
+
+      return {
+        filename,
+        memory: false,
+      };
+    }
+  }
+}
 export type AppOptions = {
-  // Place your custom options for app below here.
+  db: DBOptions;
 } & Partial<AutoloadPluginOptions>;
 
-// Pass --options via CLI arguments in command to enable these options.
-const options: AppOptions = {};
+const options: AppOptions = {
+  db: getDatabaseConfig(),
+};
 
 const app: FastifyPluginAsync<AppOptions> = async (
   fastify,
@@ -40,4 +64,5 @@ const app: FastifyPluginAsync<AppOptions> = async (
 };
 
 export default app;
+
 export { app, options };
