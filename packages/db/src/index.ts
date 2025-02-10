@@ -1,7 +1,12 @@
-import SQLiteDatabase from 'better-sqlite3';
-import { v4 as uuidv4 } from 'uuid';
-import type { Database as ISQLiteDatabase } from 'better-sqlite3';
-import type { Poll, PollOption, CreatePollInput, VoteInput } from '@repo/models';
+import SQLiteDatabase from "better-sqlite3";
+import { v4 as uuidv4 } from "uuid";
+import type { Database as ISQLiteDatabase } from "better-sqlite3";
+import type {
+  Poll,
+  PollOption,
+  CreatePollInput,
+  VoteInput,
+} from "@repo/models";
 
 /**
  * Options for setting up the database.
@@ -60,7 +65,6 @@ class DatabaseManager implements Database {
   private generateId: () => string;
   private now: () => string;
 
-
   // Eagerly prepared statements.
   private stmtInsertPoll;
   private stmtInsertOption;
@@ -77,19 +81,17 @@ class DatabaseManager implements Database {
 
     // Prepare all SQL statements.
     this.stmtInsertPoll = this.db.prepare(
-      'INSERT INTO polls (id, question, createdAt) VALUES (?, ?, ?)'
+      "INSERT INTO polls (id, question, createdAt) VALUES (?, ?, ?)",
     );
     this.stmtInsertOption = this.db.prepare(
-      'INSERT INTO poll_options (pollId, text, voteCount) VALUES (?, ?, 0)'
+      "INSERT INTO poll_options (pollId, text, voteCount) VALUES (?, ?, 0)",
     );
     this.stmtUpdateVote = this.db.prepare(
-      'UPDATE poll_options SET voteCount = voteCount + 1 WHERE id = ? AND pollId = ?'
+      "UPDATE poll_options SET voteCount = voteCount + 1 WHERE id = ? AND pollId = ?",
     );
-    this.stmtGetPoll = this.db.prepare(
-      'SELECT * FROM polls WHERE id = ?'
-    );
+    this.stmtGetPoll = this.db.prepare("SELECT * FROM polls WHERE id = ?");
     this.stmtGetPollOptions = this.db.prepare(
-      'SELECT id, text, voteCount FROM poll_options WHERE pollId = ?'
+      "SELECT id, text, voteCount FROM poll_options WHERE pollId = ?",
     );
     this.stmtGetPolls = this.db.prepare(`
       SELECT p.id, p.question, p.createdAt,
@@ -104,7 +106,7 @@ class DatabaseManager implements Database {
    */
   public createPoll(input: CreatePollInput): Poll {
     if (input.options.length < 1 || input.options.length > 5) {
-      throw new Error('Poll must have between 1 and 5 options');
+      throw new Error("Poll must have between 1 and 5 options");
     }
 
     const pollId = this.generateId();
@@ -117,7 +119,7 @@ class DatabaseManager implements Database {
 
     const poll = this.getPoll(pollId);
     if (!poll) {
-      throw new Error('Failed to retrieve the poll after creation');
+      throw new Error("Failed to retrieve the poll after creation");
     }
     return poll;
   }
@@ -128,7 +130,7 @@ class DatabaseManager implements Database {
   public vote(input: VoteInput): Poll | null {
     const result = this.stmtUpdateVote.run(input.optionId, input.pollId);
     if (result.changes === 0) {
-      throw new Error('No matching poll option found');
+      throw new Error("No matching poll option found");
     }
     return this.getPoll(input.pollId);
   }
@@ -174,7 +176,9 @@ class DatabaseManager implements Database {
  */
 export function setup(options: DBOptions): Database {
   // Determine database location: in-memory if `memory` is true or no filename given.
-  const dbFilename = options.memory ? ':memory:' : (options.filename || 'polls.db');
+  const dbFilename = options.memory
+    ? ":memory:"
+    : options.filename || "polls.db";
   const db = new SQLiteDatabase(dbFilename);
 
   // Create tables if they do not exist.
@@ -199,7 +203,7 @@ export function setup(options: DBOptions): Database {
 
 function defaultGenerateId(): string {
   return uuidv4();
-};
+}
 
 function defaultNow() {
   return new Date().toISOString();
