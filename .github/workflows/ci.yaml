@@ -45,3 +45,15 @@ jobs:
 
       - name: Test
         run: npm run test:ci
+
+      - name: Playwright Tests
+        run: npm run e2e
+        working-directory: tooling/playwright-frontend
+
+      - name: Upload Playwright test results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: playwright-report
+          path: tooling/playwright-frontend-react/playwright-report/
+          retention-days: 30
