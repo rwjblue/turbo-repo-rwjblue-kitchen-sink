@@ -15,6 +15,16 @@ export interface DBOptions {
    * Use an in-memory database instead of a file.
    */
   memory?: boolean;
+  /**
+   * Function to generate unique IDs. Defaults to internal implementation.
+   * Primarily used for testing.
+   */
+  generateId?: () => string;
+  /**
+   * Function to get current timestamp. Defaults to new Date().toISOString().
+   * Primarily used for testing.
+   */
+  now?: () => string;
 }
 
 /**
@@ -46,6 +56,10 @@ export interface Database {
 class DatabaseManager implements Database {
   public db: ISQLiteDatabase;
 
+  private generateId: () => string;
+  private now: () => string;
+
+
   // Eagerly prepared statements.
   private stmtInsertPoll;
   private stmtInsertOption;
@@ -54,8 +68,11 @@ class DatabaseManager implements Database {
   private stmtGetPollOptions;
   private stmtGetPolls;
 
-  constructor(db: ISQLiteDatabase) {
+  constructor(db: ISQLiteDatabase, options?: DBOptions) {
     this.db = db;
+
+    this.generateId = options?.generateId ?? defaultGenerateId;
+    this.now = options?.now ?? defaultNow;
 
     // Prepare all SQL statements.
     this.stmtInsertPoll = this.db.prepare(
@@ -89,8 +106,8 @@ class DatabaseManager implements Database {
       throw new Error('Poll must have between 1 and 5 options');
     }
 
-    const pollId = generateId();
-    const createdAt = new Date().toISOString();
+    const pollId = this.generateId();
+    const createdAt = this.now();
 
     this.stmtInsertPoll.run(pollId, input.question, createdAt);
     for (const text of input.options) {
@@ -176,13 +193,17 @@ export function setup(options: DBOptions): Database {
     );
   `);
 
-  return new DatabaseManager(db);
+  return new DatabaseManager(db, options);
 }
 
 /**
  * Simple unique ID generator.
  * NOTE: In a production setting you might want to use a more robust solution like the `uuid` package.
  */
-function generateId(): string {
+function defaultGenerateId(): string {
   return Math.random().toString(36).substring(2, 11);
+}
+
+function defaultNow() {
+  return new Date().toISOString();
 }
