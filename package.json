@@ -12,10 +12,11 @@
     "dev": "turbo dev",
     "format": "prettier . --cache --write",
     "lint": "turbo lint",
-    "test": "turbo test"
+    "test": "turbo test",
+    "test:ci": "turbo test:ci"
   },
   "devDependencies": {
-    "prettier": "^3.5.0",
+    "prettier": "^3.4.2",
     "turbo": "^2.4.0"
   },
   "packageManager": "npm@11.1.0",

@@ -1,7 +1,7 @@
-import { useState, type ReactElement } from 'react'
+import { useState, type ReactElement } from "react";
 
 function App(): ReactElement {
-  const [count, setCount] = useState(0)
+  const [count, setCount] = useState(0);
 
   return (
     <div className="container">
@@ -15,7 +15,7 @@ function App(): ReactElement {
         </p>
       </div>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;

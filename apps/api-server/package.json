@@ -11,7 +11,8 @@
     "check-types": "tsc --noEmit",
     "dev": "NODE_OPTIONS=\"--disable-warning=ExperimentalWarning\" fastify start -w -l info -P src/app.ts",
     "start": "NODE_OPTIONS=\"--disable-warning=ExperimentalWarning\" fastify start -l info -P src/app.ts",
-    "test": "node --test --disable-warning=ExperimentalWarning --experimental-test-coverage test/**/*.ts",
+    "test": "node --test --disable-warning=ExperimentalWarning test/**/*.ts",
+    "test:ci": "node --test --disable-warning=ExperimentalWarning --experimental-test-coverage test/**/*.ts",
     "test:watch": "node --test --disable-warning=ExperimentalWarning --watch --experimental-test-coverage test/**/*.ts"
   },
   "dependencies": {
