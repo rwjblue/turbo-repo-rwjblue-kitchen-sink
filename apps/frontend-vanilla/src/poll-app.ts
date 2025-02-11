@@ -20,7 +20,7 @@ export class PollApp {
     this.loadPolls();
   }
 
-  private async loadPolls(): Promise<void> {
+  async loadPolls(): Promise<void> {
     try {
       const response = await fetch("/api/polls");
       const polls = await response.json();
