@@ -18,9 +18,9 @@
     "test:watch": "vitest watch"
   },
   "dependencies": {
-    "@repo/db": "*",
     "@fastify/autoload": "^6.1.0",
     "@fastify/sensible": "^6.0.3",
+    "@repo/db": "*",
     "fastify": "^5.2.1",
     "fastify-cli": "^7.3.0",
     "fastify-plugin": "^5.0.1"

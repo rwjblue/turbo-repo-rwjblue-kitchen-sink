@@ -1,15 +1,12 @@
 import type { Poll } from '@repo/models';
-import { PollStore } from './store.ts';
 
 export class PollApp {
-  private store: PollStore;
   private form: HTMLFormElement;
   private optionsContainer: HTMLDivElement;
   private addOptionBtn: HTMLButtonElement;
   private pollsList: HTMLDivElement;
 
   constructor() {
-    this.store = new PollStore();
     this.form = document.getElementById('createPollForm') as HTMLFormElement;
     this.optionsContainer = document.getElementById('optionsContainer') as HTMLDivElement;
     this.addOptionBtn = document.getElementById('addOptionBtn') as HTMLButtonElement;
