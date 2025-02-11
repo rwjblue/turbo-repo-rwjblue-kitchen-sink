@@ -1,19 +1,34 @@
-import { useState, type ReactElement } from "react";
+import { useState, useEffect, type ReactElement } from "react";
+import { CreatePollForm } from "./components/CreatePollForm.tsx";
+import { PollList } from "./components/PollList.tsx";
+import type { Poll } from "@repo/models";
 
 function App(): ReactElement {
-  const [count, setCount] = useState(0);
+  const [polls, setPolls] = useState<Poll[]>([]);
+
+  const fetchPolls = async () => {
+    const response = await fetch("/api/polls");
+    const data = await response.json();
+    setPolls(data);
+  };
+
+  useEffect(() => {
+    fetchPolls();
+  }, []);
+
+  const handlePollCreated = async () => {
+    await fetchPolls();
+  };
+
+  const handleVote = async () => {
+    await fetchPolls();
+  };
 
   return (
     <div className="container">
-      <h1>React + Vite Frontend</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          Count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
+      <h1>Poll Creator & Voting App</h1>
+      <CreatePollForm onPollCreated={handlePollCreated} />
+      <PollList polls={polls} onVote={handleVote} />
     </div>
   );
 }

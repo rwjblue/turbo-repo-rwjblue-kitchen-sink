@@ -1,27 +1,30 @@
-import { describe, it, expect } from "vitest";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { describe, beforeEach, it, expect, vi } from "vitest";
+import { render, screen, waitFor } from "@testing-library/react";
 import App from "./App.tsx";
 
+// Mock fetch globally
+const mockFetch = vi.fn();
+global.fetch = mockFetch;
+
 describe("App", () => {
-  it("renders headline", () => {
-    render(<App />);
-    expect(screen.getByText("React + Vite Frontend")).toBeInTheDocument();
+  beforeEach(() => {
+    mockFetch.mockReset();
+    // Mock initial polls fetch
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: () => Promise.resolve([]),
+    });
   });
 
-  it("should increment count on button click", () => {
+  it("renders main heading", () => {
     render(<App />);
-    const button = screen.getByRole("button");
-    expect(button).toHaveTextContent("Count is 0");
-
-    fireEvent.click(button);
-    expect(button).toHaveTextContent("Count is 1");
+    expect(screen.getByText("Poll Creator & Voting App")).toBeInTheDocument();
   });
 
-  it("should display HMR instruction text", () => {
+  it("fetches polls on mount", async () => {
     render(<App />);
-    expect(screen.getByText(/Edit/)).toBeInTheDocument();
-    expect(
-      screen.getByText("src/App.tsx", { selector: "code" }),
-    ).toBeInTheDocument();
+    await waitFor(() => {
+      expect(mockFetch).toHaveBeenCalledWith("/api/polls");
+    });
   });
 });
