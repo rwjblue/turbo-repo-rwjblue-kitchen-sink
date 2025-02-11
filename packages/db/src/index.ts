@@ -1,5 +1,6 @@
 import { mkdirSync } from "node:fs";
-import { dirname } from "node:path";
+import { join, dirname } from "node:path";
+import { fileURLToPath } from "node:url";
 import SQLiteDatabase from "better-sqlite3";
 import { v4 as uuidv4 } from "uuid";
 import type { Database as ISQLiteDatabase } from "better-sqlite3";
@@ -9,6 +10,10 @@ import type {
   CreatePollInput,
   VoteInput,
 } from "@repo/models";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
 
 /**
  * Options for setting up the database.
@@ -171,6 +176,29 @@ class DatabaseManager implements Database {
     });
   }
 }
+export function buildDefaultDBOptions(): DBOptions {
+  switch (process.env.NODE_ENV) {
+    case "test":
+      return {
+        memory: true,
+      }
+    case "production":
+    case "development":
+    default: {
+      const env = process.env.NODE_ENV ?? "development";
+
+      const filename =
+        process.env.DB_PATH ??
+        join(__dirname, `../../../.db/${env}.sqlite`);
+
+      return {
+        filename,
+        memory: false,
+      };
+    }
+  }
+}
+
 /**
  * Sets up the database and returns an interface for poll operations.
  *
