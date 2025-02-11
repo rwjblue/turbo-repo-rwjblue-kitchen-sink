@@ -2,8 +2,8 @@ import { test, expect } from "@playwright/test";
 
 test.describe("React App", () => {
   test.beforeEach(async ({ page }) => {
-    // Assuming your app runs on localhost:3000 (default Vite dev server)
-    await page.goto("http://localhost:3000/");
+    // Assuming your app runs on localhost:5173 (default Vite dev server)
+    await page.goto("http://localhost:5173/");
   });
 
   test("should display the correct heading", async ({ page }) => {
