@@ -11,13 +11,13 @@ export interface SeedOptions {
 export async function seed(options: SeedOptions): Promise<void> {
   // Setup database
   const db = setup({
-    filename: options.dbPath || ':memory:',
+    filename: options.dbPath || ":memory:",
   });
 
   // Generate polls
   const polls = generatePolls({
     count: options.count,
-    seed: options.seed
+    seed: options.seed,
   });
 
   // Create polls in database
@@ -46,7 +46,8 @@ export function cli(argv: string[]): void {
         await seed({
           count: parseInt(options.count, 10),
           dbPath: options.dbPath,
-          seed: options.seed !== undefined ? parseInt(options.seed, 10) : undefined
+          seed:
+            options.seed !== undefined ? parseInt(options.seed, 10) : undefined,
         });
       } catch (error) {
         console.error("Error seeding database:", error);
