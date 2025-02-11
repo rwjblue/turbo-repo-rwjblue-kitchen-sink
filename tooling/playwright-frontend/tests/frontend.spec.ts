@@ -3,8 +3,8 @@ import { test, expect } from "@playwright/test";
 test.describe("Polling Application", () => {
   test.beforeEach(async ({ page, request }) => {
     // Reset database state before each test
-    await request.post('http://localhost:5173/api/test/reset-db');
-    await page.goto("http://localhost:5173/");
+    await request.post('http://localhost:6000/api/test/reset-db');
+    await page.goto("http://localhost:6000/");
   });
 
   test("complete poll creation and voting flow", async ({ page }) => {
