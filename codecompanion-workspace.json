@@ -1,0 +1,175 @@
+{
+  "name": "Poll Creator & Voting App",
+  "version": "1.0.0",
+  "workspace_spec": "1.0",
+  "description": "A full-stack TypeScript monorepo for a polling application using Turborepo, featuring a Fastify backend and React frontend",
+  "system_prompt": "This is a full-stack TypeScript monorepo for a polling application. It uses Turborepo for monorepo management, Fastify for the backend API, and React for the frontend. The application allows users to create polls, vote on them, and see results update in real-time. The codebase follows modern TypeScript practices and includes comprehensive testing.",
+  "groups": [
+    {
+      "name": "Backend API",
+      "description": "The Fastify-based backend API implementation",
+      "system_prompt": "The backend is built with Fastify and provides endpoints for creating polls, voting, and retrieving poll data. It uses a SQLite database through better-sqlite3.",
+      "files": [
+        {
+          "description": "Main API routes for poll operations",
+          "path": "apps/api-server/src/routes/api/polls.ts"
+        },
+        {
+          "description": "Database plugin for Fastify integration",
+          "path": "apps/api-server/src/plugins/db.ts"
+        },
+        {
+          "description": "Test helper for API",
+          "path": "apps/api-server/src/plugins/test-helpers.ts"
+        }
+      ]
+    },
+    {
+      "name": "React Frontend",
+      "description": "React components implementing the poll UI",
+      "system_prompt": "The frontend is built with React and Vite, featuring components for creating polls and displaying poll results with real-time updates.",
+      "files": [
+        {
+          "description": "Frontend HTML entry point",
+          "path": "apps/frontend-react/index.html"
+        },
+        {
+          "description": "Frontend styles",
+          "path": "apps/frontend-react/src/index.css"
+        },
+        {
+          "description": "Main React application component",
+          "path": "apps/frontend-react/src/App.tsx"
+        },
+        {
+          "description": "Poll creation form component",
+          "path": "apps/frontend-react/src/components/CreatePollForm.tsx"
+        },
+        {
+          "description": "Poll list display component",
+          "path": "apps/frontend-react/src/components/PollList.tsx"
+        },
+        {
+          "description": "Tests for the poll creation form",
+          "path": "apps/frontend-react/src/components/CreatePollForm.test.tsx"
+        },
+        {
+          "description": "Tests for the poll list component",
+          "path": "apps/frontend-react/src/components/PollList.test.tsx"
+        }
+      ]
+    },
+    {
+      "name": "Vanilla Frontend",
+      "description": "Vanilla TypeScript implementation of the poll UI",
+      "system_prompt": "The vanilla frontend is built with TypeScript and Vite, featuring a class-based architecture for managing polls and UI interactions without any framework dependencies.",
+      "files": [
+        {
+          "description": "Frontend HTML entry point",
+          "path": "apps/frontend-vanilla/index.html"
+        },
+        {
+          "description": "Main TypeScript entry point",
+          "path": "apps/frontend-vanilla/src/main.ts"
+        },
+        {
+          "description": "Core poll application logic",
+          "path": "apps/frontend-vanilla/src/poll-app.ts"
+        },
+        {
+          "description": "Poll data store implementation",
+          "path": "apps/frontend-vanilla/src/store.ts"
+        },
+        {
+          "description": "Frontend styles",
+          "path": "apps/frontend-vanilla/src/style.css"
+        }
+      ]
+    },
+    {
+      "name": "Database Layer",
+      "description": "Database implementation and tests",
+      "system_prompt": "The database layer uses better-sqlite3 for data persistence, with comprehensive tests for poll operations.",
+      "symbols": [
+        {
+          "description": "Database functionality",
+          "path": "packages/db/src/index.ts"
+        },
+        {
+          "description": "Database implementation tests",
+          "path": "packages/db/test/index.test.ts"
+        }
+      ],
+      "files": []
+    },
+    {
+      "name": "Model Layer",
+      "description": "Shared Typescript interfaces for models",
+      "system_prompt": "",
+      "symbols": [
+        {
+          "description": "Model definitions",
+          "path": "packages/models/src/index.ts"
+        }
+      ],
+      "files": []
+    },
+    {
+      "name": "Tooling & Linting",
+      "description": "ESLint and TypeScript configuration shared across the monorepo",
+      "system_prompt": "The monorepo uses shared ESLint and TypeScript configurations to ensure consistent code quality across all packages.",
+      "files": [
+        {
+          "description": "Base ESLint configuration used across the monorepo",
+          "path": "packages/eslint-config/base.js"
+        },
+        {
+          "description": "Base TypeScript configuration used across the monorepo",
+          "path": "packages/typescript-config/base.json"
+        }
+      ]
+    },
+    {
+      "name": "Available Commands",
+      "description": "NPM scripts available in the monorepo",
+      "system_prompt": "The monorepo uses Turborepo to manage script execution across packages. Here are the key package.json scripts from various packages.",
+      "files": [
+        {
+          "description": "Top level scripts",
+          "path": "package.json"
+        },
+        {
+          "description": "Frontend React app scripts",
+          "path": "apps/frontend-react/package.json"
+        },
+        {
+          "description": "API server scripts",
+          "path": "apps/api-server/package.json"
+        },
+        {
+          "description": "db scripts",
+          "path": "packages/db/package.json"
+        },
+        {
+          "description": "E2E testing scripts",
+          "path": "tooling/playwright-frontend/package.json"
+        }
+      ]
+    },
+    {
+      "name": "Project Configuration",
+      "description": "Core configuration files for the monorepo",
+      "system_prompt": "These files define the project structure and dependencies.",
+      "files": [
+        {
+          "description": "Root package.json defining workspaces and shared dependencies",
+          "path": "package.json"
+        },
+        {
+          "description": "Root turbo.json defining turbo repo commands",
+          "path": "turbo.json"
+        }
+      ]
+    }
+  ]
+}
