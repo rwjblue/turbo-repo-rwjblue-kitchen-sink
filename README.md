@@ -19,7 +19,6 @@ This Turborepo includes the following packages and apps:
 
 - `api-server`: a [Fastify](https://fastify.io/) server
 - `frontend-react`: a [Vite](https://vitejs.dev/) + React single page app
-- `playwright-frontend`: E2E testing setup for the frontend
 
 ### Packages
 
@@ -27,6 +26,11 @@ This Turborepo includes the following packages and apps:
 - `@repo/models`: Shared TypeScript interfaces and types
 - `@repo/eslint-config`: Shared ESLint configurations
 - `@repo/typescript-config`: Shared TypeScript configurations
+
+### Tools
+
+- `playwright-frontend`: E2E testing setup for the frontend
+- `commands`: Custom scripts for the monorepo
 
 ### Core Technologies
 
