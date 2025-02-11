@@ -43,7 +43,7 @@ describe("PollList", () => {
       expect(mockFetch).toHaveBeenCalledWith("/api/polls/vote", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ pollId: "1", optionId: 1 }),
+        body: JSON.stringify({ pollId: "1", optionId: "1" }),
       });
     });
 
@@ -63,5 +63,63 @@ describe("PollList", () => {
 
     expect(option1).toBeInTheDocument();
     expect(option2).toBeInTheDocument();
+  });
+
+  it("sorts polls by total votes in descending order", () => {
+    const pollsToSort: Poll[] = [
+      {
+        id: "1",
+        question: "First Poll",
+        createdAt: new Date().toISOString(),
+        options: [
+          { id: "1", text: "Option 1", voteCount: 1 },
+          { id: "2", text: "Option 2", voteCount: 2 },
+        ], // Total: 3 votes
+      },
+      {
+        id: "2",
+        question: "Second Poll",
+        createdAt: new Date().toISOString(),
+        options: [
+          { id: "3", text: "Option 1", voteCount: 3 },
+          { id: "4", text: "Option 2", voteCount: 4 },
+        ], // Total: 7 votes
+      },
+    ];
+
+    render(<PollList polls={pollsToSort} onVote={onVote} />);
+
+    const headings = screen.getAllByRole("heading", { level: 3 });
+    expect(headings[0]).toHaveTextContent("Second Poll");
+    expect(headings[1]).toHaveTextContent("First Poll");
+  });
+
+  it("maintains sort order when votes are equal", () => {
+    const pollsWithEqualVotes: Poll[] = [
+      {
+        id: "1",
+        question: "First Poll",
+        createdAt: new Date().toISOString(),
+        options: [
+          { id: "1", text: "Option 1", voteCount: 2 },
+          { id: "2", text: "Option 2", voteCount: 1 },
+        ], // Total: 3 votes
+      },
+      {
+        id: "2",
+        question: "Second Poll",
+        createdAt: new Date().toISOString(),
+        options: [
+          { id: "3", text: "Option 1", voteCount: 1 },
+          { id: "4", text: "Option 2", voteCount: 2 },
+        ], // Total: 3 votes
+      },
+    ];
+
+    render(<PollList polls={pollsWithEqualVotes} onVote={onVote} />);
+
+    const headings = screen.getAllByRole("heading", { level: 3 });
+    expect(headings[0]).toHaveTextContent("First Poll");
+    expect(headings[1]).toHaveTextContent("Second Poll");
   });
 });

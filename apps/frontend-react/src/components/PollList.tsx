@@ -19,9 +19,16 @@ export function PollList({ polls, onVote }: PollListProps): ReactElement {
     }
   };
 
+  // Sort polls by total votes (sum of all option votes)
+  const sortedPolls = [...polls].sort((a, b) => {
+    const getTotalVotes = (poll: Poll) =>
+      poll.options.reduce((sum, option) => sum + option.voteCount, 0);
+    return getTotalVotes(b) - getTotalVotes(a);
+  });
+
   return (
     <div className="poll-list">
-      {polls.map((poll) => (
+      {sortedPolls.map((poll) => (
         <div key={poll.id} className="poll-card">
           <h3>{poll.question}</h3>
           <div className="poll-options">
