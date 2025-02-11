@@ -3,16 +3,20 @@ import { test, expect } from "@playwright/test";
 test.describe("Polling Application", () => {
   test.beforeEach(async ({ page, request }) => {
     // Reset database state before each test
-    await request.post('http://localhost:6000/api/test/reset-db');
+    await request.post("http://localhost:6000/api/test/reset-db");
     await page.goto("http://localhost:6000/");
   });
 
   test("complete poll creation and voting flow", async ({ page }) => {
     // Verify initial page load
-    await expect(page.getByRole("heading", { name: "Poll Creator & Voting App" })).toBeVisible();
+    await expect(
+      page.getByRole("heading", { name: "Poll Creator & Voting App" }),
+    ).toBeVisible();
 
     // Create a new poll
-    await page.getByPlaceholder("Enter your question").fill("What's your favorite color?");
+    await page
+      .getByPlaceholder("Enter your question")
+      .fill("What's your favorite color?");
     await page.getByPlaceholder("Option 1").fill("Blue");
     await page.getByText("Add Option").click();
     await page.getByPlaceholder("Option 2").fill("Red");

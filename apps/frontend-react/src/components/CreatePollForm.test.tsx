@@ -12,7 +12,9 @@ describe("CreatePollForm", () => {
   it("renders form elements", () => {
     render(<CreatePollForm onPollCreated={onPollCreated} />);
 
-    expect(screen.getByPlaceholderText("Enter your question")).toBeInTheDocument();
+    expect(
+      screen.getByPlaceholderText("Enter your question"),
+    ).toBeInTheDocument();
     expect(screen.getByPlaceholderText("Option 1")).toBeInTheDocument();
     expect(screen.getByText("Add Option")).toBeInTheDocument();
     expect(screen.getByText("Create Poll")).toBeInTheDocument();

@@ -4,13 +4,15 @@ interface CreatePollFormProps {
   onPollCreated: () => void;
 }
 
-export function CreatePollForm({ onPollCreated }: CreatePollFormProps): ReactElement {
+export function CreatePollForm({
+  onPollCreated,
+}: CreatePollFormProps): ReactElement {
   const [question, setQuestion] = useState("");
   const [options, setOptions] = useState<string[]>([""]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const filteredOptions = options.filter(opt => opt.trim() !== "");
+    const filteredOptions = options.filter((opt) => opt.trim() !== "");
 
     const response = await fetch("/api/polls", {
       method: "POST",
@@ -48,10 +50,7 @@ export function CreatePollForm({ onPollCreated }: CreatePollFormProps): ReactEle
         />
       ))}
       {options.length < 5 && (
-        <button
-          type="button"
-          onClick={() => setOptions([...options, ""])}
-        >
+        <button type="button" onClick={() => setOptions([...options, ""])}>
           Add Option
         </button>
       )}

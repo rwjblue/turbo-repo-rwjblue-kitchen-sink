@@ -32,10 +32,10 @@ export default defineConfig({
     trace: "on-first-retry",
 
     // Automatically capture screenshots on test failure
-    screenshot: 'only-on-failure',
+    screenshot: "only-on-failure",
 
     // Record videos only if a test fails
-    video: 'retain-on-failure',
+    video: "retain-on-failure",
   },
 
   /* Configure projects for major browsers */
@@ -82,5 +82,5 @@ export default defineConfig({
     url: "http://localhost:6000",
     reuseExistingServer: !process.env.CI,
     timeout: 120 * 1000, // 120 seconds
-  }
+  },
 });

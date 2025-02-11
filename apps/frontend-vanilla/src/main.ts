@@ -1,5 +1,5 @@
-import './style.css';
-import { PollApp } from './poll-app.ts';
+import "./style.css";
+import { PollApp } from "./poll-app.ts";
 
 declare global {
   interface Window {

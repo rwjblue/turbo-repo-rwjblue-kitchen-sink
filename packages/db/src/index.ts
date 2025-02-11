@@ -14,7 +14,6 @@ import type {
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-
 /**
  * Options for setting up the database.
  */
@@ -220,15 +219,14 @@ export function buildDefaultDBOptions(): DBOptions {
     case "test":
       return {
         memory: true,
-      }
+      };
     case "production":
     case "development":
     default: {
       const env = process.env.NODE_ENV ?? "development";
 
       const filename =
-        process.env.DB_PATH ??
-        join(__dirname, `../../../.db/${env}.sqlite`);
+        process.env.DB_PATH ?? join(__dirname, `../../../.db/${env}.sqlite`);
 
       return {
         filename,

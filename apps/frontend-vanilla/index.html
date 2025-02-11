@@ -1,34 +1,34 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Poll Creator & Voting App</title>
-</head>
-<body>
+  </head>
+  <body>
     <div class="root">
-    <div class="container">
+      <div class="container">
         <h1>Poll Creator & Voting App</h1>
-        
+
         <form id="createPollForm" class="poll-form">
-            <input 
-                type="text" 
-                id="questionInput" 
-                placeholder="Enter your question" 
-                required
-            >
-            <div id="optionsContainer" class="options-container">
-                <input type="text" placeholder="Option 1" required>
-            </div>
-            <div class="button-group">
-                <button type="button" id="addOptionBtn">Add Option</button>
-                <button type="submit">Create Poll</button>
-            </div>
+          <input
+            type="text"
+            id="questionInput"
+            placeholder="Enter your question"
+            required
+          />
+          <div id="optionsContainer" class="options-container">
+            <input type="text" placeholder="Option 1" required />
+          </div>
+          <div class="button-group">
+            <button type="button" id="addOptionBtn">Add Option</button>
+            <button type="submit">Create Poll</button>
+          </div>
         </form>
 
         <div id="pollsList" class="poll-list"></div>
+      </div>
     </div>
-</div>
     <script type="module" src="/src/main.ts"></script>
-</body>
+  </body>
 </html>

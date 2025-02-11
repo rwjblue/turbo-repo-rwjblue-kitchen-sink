@@ -30,5 +30,5 @@ beforeEach(() => {
 afterEach(() => {
   cleanup();
   vi.clearAllMocks();
-  document.body.innerHTML = '';
+  document.body.innerHTML = "";
 });

@@ -1,4 +1,4 @@
-import type { Poll } from '@repo/models';
+import type { Poll } from "@repo/models";
 
 export class PollApp {
   private form: HTMLFormElement;
@@ -7,10 +7,14 @@ export class PollApp {
   private pollsList: HTMLDivElement;
 
   constructor() {
-    this.form = document.getElementById('createPollForm') as HTMLFormElement;
-    this.optionsContainer = document.getElementById('optionsContainer') as HTMLDivElement;
-    this.addOptionBtn = document.getElementById('addOptionBtn') as HTMLButtonElement;
-    this.pollsList = document.getElementById('pollsList') as HTMLDivElement;
+    this.form = document.getElementById("createPollForm") as HTMLFormElement;
+    this.optionsContainer = document.getElementById(
+      "optionsContainer",
+    ) as HTMLDivElement;
+    this.addOptionBtn = document.getElementById(
+      "addOptionBtn",
+    ) as HTMLButtonElement;
+    this.pollsList = document.getElementById("pollsList") as HTMLDivElement;
 
     this.initializeEventListeners();
     this.loadPolls();
@@ -18,76 +22,80 @@ export class PollApp {
 
   private async loadPolls(): Promise<void> {
     try {
-      const response = await fetch('/api/polls');
+      const response = await fetch("/api/polls");
       const polls = await response.json();
       this.renderPolls(polls);
     } catch (error) {
-      console.error('Failed to load polls:', error);
+      console.error("Failed to load polls:", error);
     }
   }
 
   private initializeEventListeners(): void {
-    this.form.addEventListener('submit', (e) => this.handleFormSubmit(e));
-    this.addOptionBtn.addEventListener('click', () => this.addOptionInput());
+    this.form.addEventListener("submit", (e) => this.handleFormSubmit(e));
+    this.addOptionBtn.addEventListener("click", () => this.addOptionInput());
   }
 
   private addOptionInput(): void {
-    const optionInputs = this.optionsContainer.getElementsByTagName('input');
+    const optionInputs = this.optionsContainer.getElementsByTagName("input");
     if (optionInputs.length < 5) {
-      const input = document.createElement('input');
-      input.type = 'text';
+      const input = document.createElement("input");
+      input.type = "text";
       input.placeholder = `Option ${optionInputs.length + 1}`;
       input.required = true;
       this.optionsContainer.appendChild(input);
     }
 
-    this.addOptionBtn.style.display = optionInputs.length >= 4 ? 'none' : 'block';
+    this.addOptionBtn.style.display =
+      optionInputs.length >= 4 ? "none" : "block";
   }
 
   private async handleFormSubmit(e: Event): Promise<void> {
     e.preventDefault();
-    const questionInput = document.getElementById('questionInput') as HTMLInputElement;
+    const questionInput = document.getElementById(
+      "questionInput",
+    ) as HTMLInputElement;
     const optionInputs = Array.from(
-      this.optionsContainer.getElementsByTagName('input')
+      this.optionsContainer.getElementsByTagName("input"),
     ) as HTMLInputElement[];
 
     const options = optionInputs
-      .map(input => input.value.trim())
-      .filter(value => value !== '');
+      .map((input) => input.value.trim())
+      .filter((value) => value !== "");
 
     try {
-      await fetch('/api/polls', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      await fetch("/api/polls", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           question: questionInput.value,
-          options
-        })
+          options,
+        }),
       });
 
       await this.loadPolls();
       this.resetForm();
     } catch (error) {
-      console.error('Failed to create poll:', error);
+      console.error("Failed to create poll:", error);
     }
   }
 
   private resetForm(): void {
     this.form.reset();
-    this.optionsContainer.innerHTML = '<input type="text" placeholder="Option 1" required>';
-    this.addOptionBtn.style.display = 'block';
+    this.optionsContainer.innerHTML =
+      '<input type="text" placeholder="Option 1" required>';
+    this.addOptionBtn.style.display = "block";
   }
 
   public async handleVote(pollId: string, optionId: string): Promise<void> {
     try {
-      await fetch('/api/polls/vote', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ pollId, optionId })
+      await fetch("/api/polls/vote", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ pollId, optionId }),
       });
       await this.loadPolls();
     } catch (error) {
-      console.error('Failed to vote:', error);
+      console.error("Failed to vote:", error);
     }
   }
 
@@ -98,11 +106,15 @@ export class PollApp {
       return getTotalVotes(b) - getTotalVotes(a);
     });
 
-    this.pollsList.innerHTML = sortedPolls.map(poll => `
+    this.pollsList.innerHTML = sortedPolls
+      .map(
+        (poll) => `
       <div class="poll-card">
         <h3>${this.escapeHtml(poll.question)}</h3>
         <div class="poll-options">
-          ${poll.options.map(option => `
+          ${poll.options
+            .map(
+              (option) => `
             <div class="poll-option">
               <span class="option-text">
                 ${this.escapeHtml(option.text)} (${option.voteCount} votes)
@@ -111,10 +123,14 @@ export class PollApp {
                 Vote
               </button>
             </div>
-          `).join('')}
+          `,
+            )
+            .join("")}
         </div>
       </div>
-    `).join('');
+    `,
+      )
+      .join("");
   }
 
   private escapeHtml(unsafe: string): string {
