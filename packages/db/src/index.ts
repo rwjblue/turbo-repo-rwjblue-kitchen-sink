@@ -45,6 +45,12 @@ export interface DBOptions {
  */
 export interface Database {
   /**
+   * Resets the database to initial state by dropping and recreating tables.
+   * This is often useful in tests.
+   */
+  reset(): void;
+
+  /**
    * Creates a new poll and returns the created poll.
    */
   createPoll(input: CreatePollInput): Poll;
@@ -86,6 +92,8 @@ class DatabaseManager implements Database {
     this.generateId = options?.generateId ?? defaultGenerateId;
     this.now = options?.now ?? defaultNow;
 
+    this.ensureTables();
+
     // Prepare all SQL statements.
     this.stmtInsertPoll = this.db.prepare(
       "INSERT INTO polls (id, question, createdAt) VALUES (?, ?, ?)",
@@ -106,6 +114,37 @@ class DatabaseManager implements Database {
       FROM polls p
       ORDER BY totalVotes DESC
     `);
+  }
+
+  private ensureTables() {
+    // Create tables if they do not exist.
+    this.db.exec(`
+      CREATE TABLE IF NOT EXISTS polls (
+        id TEXT PRIMARY KEY,
+        question TEXT NOT NULL,
+        createdAt TEXT NOT NULL
+      );
+
+      CREATE TABLE IF NOT EXISTS poll_options (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        pollId TEXT NOT NULL,
+        text TEXT NOT NULL,
+        voteCount INTEGER NOT NULL DEFAULT 0,
+        FOREIGN KEY (pollId) REFERENCES polls(id)
+      );
+    `);
+  }
+
+  private dropTables() {
+    this.db.exec(`
+      DROP TABLE IF EXISTS poll_options;
+      DROP TABLE IF EXISTS polls;
+    `);
+  }
+
+  public reset() {
+    this.dropTables();
+    this.ensureTables();
   }
 
   /**
@@ -218,23 +257,6 @@ export function setup(options: DBOptions): Database {
   }
 
   const db = new SQLiteDatabase(dbFilename);
-
-  // Create tables if they do not exist.
-  db.exec(`
-    CREATE TABLE IF NOT EXISTS polls (
-      id TEXT PRIMARY KEY,
-      question TEXT NOT NULL,
-      createdAt TEXT NOT NULL
-    );
-
-    CREATE TABLE IF NOT EXISTS poll_options (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      pollId TEXT NOT NULL,
-      text TEXT NOT NULL,
-      voteCount INTEGER NOT NULL DEFAULT 0,
-      FOREIGN KEY (pollId) REFERENCES polls(id)
-    );
-  `);
 
   return new DatabaseManager(db, options);
 }
